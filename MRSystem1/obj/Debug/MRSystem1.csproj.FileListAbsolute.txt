@@ -1,0 +1,22 @@
+c:\users\user1\documents\visual studio 2015\Projects\MRSystem1\MRSystem1\bin\Debug\MRSystem1.exe.config
+F:\SEM6\OOSE\MRSystem1\MRSystem1\bin\Debug\MRSystem1.exe.config
+F:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.csprojResolveAssemblyReference.cache
+F:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.AddMedicineForm.resources
+F:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.Properties.Resources.resources
+F:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.csproj.GenerateResource.Cache
+F:\SEM6\OOSE\MRSystem1\MRSystem1\bin\Debug\MRSystem1.exe
+F:\SEM6\OOSE\MRSystem1\MRSystem1\bin\Debug\MRSystem1.pdb
+F:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.exe
+F:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.pdb
+F:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.DrugWeightForm.resources
+E:\SEM6\OOSE\MRSystem1\MRSystem1\bin\Debug\MRSystem1.exe.config
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.exe
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.pdb
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.csprojResolveAssemblyReference.cache
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.AddMedicineForm.resources
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.DrugWeightForm.resources
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.Properties.Resources.resources
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.csproj.GenerateResource.Cache
+E:\SEM6\OOSE\MRSystem1\MRSystem1\bin\Debug\MRSystem1.exe
+E:\SEM6\OOSE\MRSystem1\MRSystem1\bin\Debug\MRSystem1.pdb
+E:\SEM6\OOSE\MRSystem1\MRSystem1\obj\Debug\MRSystem1.CreateReport.resources
