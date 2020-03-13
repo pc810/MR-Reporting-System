@@ -66,6 +66,7 @@ namespace MRSystem1
             int mid = mrdb.createMedince(m);
             mrdb.addDrugToMedicine(mid,ldw);
             //m.drugweight
+            label6.Text = "New Medicine Successfully Added";
 
         }
     }

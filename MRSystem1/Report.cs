@@ -19,6 +19,7 @@ namespace MRSystem1
             this.place = place;
             this.reportDate = reportDate;
             this.doctorVisited = doctorVisited;
+            this.approved = "false";
         }
 
         public int rid { get; set; }
@@ -26,6 +27,7 @@ namespace MRSystem1
         public string place { get; set; }
         public DateTime reportDate { get; set; }
         public List<int> doctorVisited { get; set; }
+        public String approved { get; set; }
 
 
     }

@@ -114,7 +114,87 @@ namespace MRSystem1
 
             return allDrugs;
         
-    }
+        }
+
+        public List<AbstractMedicine> GetAllMedicines()
+        {
+            List<AbstractMedicine> allMedicines = new List<AbstractMedicine>();
+
+
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Select * from AbstractMedicine";
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    AbstractMedicine medicine = new AbstractMedicine();
+                    medicine.mid = Convert.ToInt32(reader["mid"]);
+                    medicine.name = reader["name"].ToString();
+                    medicine.description = reader["description"].ToString();
+                    medicine.price = Convert.ToDouble(reader["price"]);
+                    medicine.type = reader["type"].ToString();
+                    medicine.state = reader["state"].ToString();
+
+
+                    allMedicines.Add(medicine);
+                }
+            }
+
+            return allMedicines;
+
+        }
+
+        public void updateMedicine(AbstractMedicine medicine)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "Update AbstractMedicine SET name = @name, description=@description, type=@type, state=@state, price=@price where mid =@mid"
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@name", medicine.name));
+                cmd.Parameters.Add(new SqlParameter("@description", medicine.description));
+                cmd.Parameters.Add(new SqlParameter("@price", medicine.price));
+                cmd.Parameters.Add(new SqlParameter("@type", medicine.type));
+                cmd.Parameters.Add(new SqlParameter("@state", medicine.state));
+                cmd.Parameters.Add(new SqlParameter("@mid", medicine.mid));
+
+
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void deleteMedicine(int mid)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "Delete From AbstractMedicine where mid = @mid"
+                };
+
+              
+                cmd.Parameters.Add(new SqlParameter("@mid", mid));
+
+
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public int getDrugIdByName(string drugname)
         {
 
@@ -192,6 +272,8 @@ namespace MRSystem1
             return docid;
         }
 
+
+
         public void addDoctor(Doctor doctor)
         {
             using (SqlConnection con = new SqlConnection(cs))
@@ -224,11 +306,13 @@ namespace MRSystem1
                 {
                     Connection = con,
                     CommandText =
-                        "INSERT INTO Report (mrid,place,reportDate) VALUES(@mrid,@place,@reportDate);select scope_identity();"
+                        "INSERT INTO Report (mrid,place,reportDate,approved) VALUES(@mrid,@place,@reportDate,@approved);select scope_identity();"
                 };
                 cmd.Parameters.Add(new SqlParameter("@mrid", report.mrid));
                 cmd.Parameters.Add(new SqlParameter("@place",report.place));
                 cmd.Parameters.Add(new SqlParameter("@reportDate", report.reportDate));
+                cmd.Parameters.Add(new SqlParameter("@approved", "false"));
+
 
                 con.Open();
                 rid = Convert.ToInt32(cmd.ExecuteScalar());
@@ -237,6 +321,91 @@ namespace MRSystem1
             return rid;
         }
 
+
+        public Report getReport(int mrid,DateTime date)
+        {
+            //List<Report> reports = new List<Report>();
+            Report report = null;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Select * from Report where mrid=@mrid and reportDate=@reportDate";
+                cmd.Parameters.Add(new SqlParameter("@mrid", mrid));
+                cmd.Parameters.Add(new SqlParameter("@reportDate", date.Date));
+
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    report = new Report();
+                    report.rid = Convert.ToInt32(reader["rid"]);
+                    report.mrid = Convert.ToInt32(reader["mrid"]);
+                    report.place = reader["place"].ToString();
+                    report.reportDate = Convert.ToDateTime(reader["reportDate"]);
+                    report.approved = reader["approved"].ToString();
+                }
+
+            }
+
+            return report;
+        }
+
+        public List<Doctor> getReportDoctorList(int rid)
+        {
+            List<Doctor> doctors = new List<Doctor>();
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Select * from Doctor where docid in (Select docid from ReportDoctor where rid=@rid)";
+                cmd.Parameters.Add(new SqlParameter("@rid", rid));
+
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+
+                    Doctor doctor = new Doctor();
+                    doctor.docid = Convert.ToInt32(reader["docid"]);
+                    doctor.name = reader["name"].ToString();
+                    doctor.address = reader["address"].ToString();
+                    doctor.degree = reader["degree"].ToString();
+                    doctors.Add(doctor);
+                }
+
+            }
+
+            return doctors;
+        }
+
+        public void updateReportStatus(int rid)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "Update Report SET approved = @approved where rid =@rid"
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@rid",rid));
+                cmd.Parameters.Add(new SqlParameter("@approved", "true"));
+               
+
+
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            
+        }
+        
         public void addDoctorToReport(int rid, List<int> visitedDoctor)
         {
             using (SqlConnection con = new SqlConnection(cs))

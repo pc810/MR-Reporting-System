@@ -18,7 +18,12 @@ namespace MRSystem1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new AddMedicineForm(mrdb));
-            Application.Run(new CreateReport(mrdb));
+            //Application.Run(new CreateReport(mrdb));
+            //Application.Run(new UpdateMedicine(mrdb));
+            //Application.Run(new viewReport(mrdb));
+            Application.Run(new Main(mrdb));
+
+
         }
     }
 }
