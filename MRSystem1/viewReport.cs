@@ -19,7 +19,24 @@ namespace MRSystem1
             this.mrdb = mrdb;
             InitializeComponent();
             List<String> listofmrsList = new List<string>() {"0","123"};
-            listBox1.DataSource = listofmrsList;
+            // listBox1.DataSource = listofmrsList;
+            List<KeyValuePair<int, string>> mrlist = null;
+            if (!this.mrdb.isMR)
+            {
+                mrlist = this.mrdb.getMRList();
+            }
+            else
+            {
+                mrlist = new List<KeyValuePair<int, string>>();
+                mrlist.Add(new KeyValuePair<int, string>(this.mrdb.uid, "Your Reports"));
+                button1.Visible = false; 
+            }
+
+            comboBox1.DataSource = null;
+            comboBox1.Items.Clear();
+            comboBox1.DataSource = new BindingSource(mrlist, null);
+            comboBox1.DisplayMember = "Value";
+            comboBox1.ValueMember = "Key";            
         }
 
         void displayStatus(Report report)
@@ -42,15 +59,35 @@ namespace MRSystem1
         }
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Report report=mrdb.getReport(Int32.Parse(listBox1.SelectedItem as string),dateTimePicker1.Value);
-            displayStatus(report);
+            //Report report=mrdb.getReport(Int32.Parse(listBox1.SelectedItem as string),dateTimePicker1.Value);
+            try
+            {
+                int mrid = int.Parse(comboBox1.SelectedValue.ToString());
+                DateTime date = new DateTime(dateTimePicker1.Value.Ticks);
+                Report report = mrdb.getReport(mrid, date);
+                displayStatus(report);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
 
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            Report report = mrdb.getReport(Int32.Parse(listBox1.SelectedItem as string), dateTimePicker1.Value);
-            displayStatus(report);
+            //Report report = mrdb.getReport(Int32.Parse(listBox1.SelectedItem as string), dateTimePicker1.Value);
+            try
+            {
+                int mrid = int.Parse(comboBox1.SelectedValue.ToString());
+                DateTime date = new DateTime(dateTimePicker1.Value.Ticks);
+                Report report = mrdb.getReport(mrid, date);               
+                displayStatus(report);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

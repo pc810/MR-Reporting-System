@@ -21,7 +21,9 @@ namespace MRSystem1
             //Application.Run(new CreateReport(mrdb));
             //Application.Run(new UpdateMedicine(mrdb));
             //Application.Run(new viewReport(mrdb));
-            Application.Run(new Main(mrdb));
+            Application.Run(new Login());
+       //     Application.Run(new ConfirmScheduleForm(mrdb));
+
 
 
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRSystem
+namespace MRSystem1
 {
     public class Manager : Employee
     {
@@ -45,6 +45,9 @@ namespace MRSystem
         {
             return mrs;
         }
-
+        public List<String> getRegion()
+        {
+            return this.Region;
+        }
     }
 }

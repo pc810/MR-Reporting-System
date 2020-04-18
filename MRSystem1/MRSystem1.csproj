@@ -53,6 +53,30 @@
     <Compile Include="AddMedicineForm.Designer.cs">
       <DependentUpon>AddMedicineForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddSchedule.Designer.cs">
+      <DependentUpon>AddSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssignLocalityForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignLocalityForm.Designer.cs">
+      <DependentUpon>AssignLocalityForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmSchedule.Designer.cs">
+      <DependentUpon>ConfirmSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmScheduleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmScheduleForm.Designer.cs">
+      <DependentUpon>ConfirmScheduleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CreateReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +92,12 @@
       <DependentUpon>DrugWeightForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Employee.cs" />
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,13 +105,38 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager.cs" />
+    <Compile Include="ManagerRegistration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagerRegistration.Designer.cs">
+      <DependentUpon>ManagerRegistration.cs</DependentUpon>
+    </Compile>
     <Compile Include="MedicalRepresentative.cs" />
     <Compile Include="AbstractMedicine.cs" />
     <Compile Include="MRDB.cs" />
+    <Compile Include="MRRegistration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MRRegistration.Designer.cs">
+      <DependentUpon>MRRegistration.cs</DependentUpon>
+    </Compile>
     <Compile Include="PharmaCompany.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Register.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Register.Designer.cs">
+      <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
     <Compile Include="Report.cs" />
+    <Compile Include="Schedule.cs" />
+    <Compile Include="ScheduleList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScheduleList.Designer.cs">
+      <DependentUpon>ScheduleList.cs</DependentUpon>
+    </Compile>
     <Compile Include="UpdateMedicine.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,14 +152,35 @@
     <EmbeddedResource Include="AddMedicineForm.resx">
       <DependentUpon>AddMedicineForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AddSchedule.resx">
+      <DependentUpon>AddSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssignLocalityForm.resx">
+      <DependentUpon>AssignLocalityForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmSchedule.resx">
+      <DependentUpon>ConfirmSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmScheduleForm.resx">
+      <DependentUpon>ConfirmScheduleForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CreateReport.resx">
       <DependentUpon>CreateReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DrugWeightForm.resx">
       <DependentUpon>DrugWeightForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagerRegistration.resx">
+      <DependentUpon>ManagerRegistration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MRRegistration.resx">
+      <DependentUpon>MRRegistration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -115,6 +191,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Register.resx">
+      <DependentUpon>Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScheduleList.resx">
+      <DependentUpon>ScheduleList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UpdateMedicine.resx">
       <DependentUpon>UpdateMedicine.cs</DependentUpon>
     </EmbeddedResource>

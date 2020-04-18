@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRSystem
+namespace MRSystem1
 {
     abstract public class Employee
     {
@@ -12,16 +12,16 @@ namespace MRSystem
         {
 
         }
-        private int Id { get; set; }
-        private String Name { get; set; }
+        public int Id { get; set; }
+        public String Name { get; set; }
 
-        private String Password { get; set; }
+        public String Password { get; set; }
 
-        private String Email { get; set; }
+        public String Email { get; set; }
 
-        private String Address { get; set; }
+        public String Address { get; set; }
 
-        private String PhoneNumber { get; set; }
+        public String PhoneNumber { get; set; }
 
         public Employee(String name,String password,String email,String address,String phonenumber)
         {
@@ -51,7 +51,7 @@ namespace MRSystem
             
         }
 
-        private Employee getProfileDetail()
+        public Employee getProfileDetail()
         {
             return this;
         }

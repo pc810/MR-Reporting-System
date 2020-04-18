@@ -4,19 +4,325 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MRSystem;
 
 namespace MRSystem1
 {
     public class MRDB
     {
         private readonly string cs;
+        public Boolean isLoggedin = false;
+        public Boolean isManager= false;
+        public Boolean isMR = false;
+        public int uid = -1;
        
         public MRDB()
         {
-            cs = @"Data Source = (LOCALDB)\MSSqlLocalDb; Initial Catalog = MrDB; Integrated Security = True; Connect Timeout = 15; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            //cs = @"Data Source = (LOCALDB)\MSSqlLocalDb; Initial Catalog = MrDB; Integrated Security = True; Connect Timeout = 15; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            cs = @"Data Source=(LOCALDB)\MSSqlLocalDb;AttachDbFilename=D:\work\MR-Reporting-System\MrDB.mdf;Integrated Security=True";
         }
 
+        public List<Schedule> GetSchedulesForCurrent()
+        {
+            List<Schedule> list = new List<Schedule>();
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Select * from Schedule where uid = @uid";
+                cmd.Parameters.Add(new SqlParameter("@uid", this.uid));
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Schedule sc = new Schedule();
+                    sc.sid = Convert.ToInt32(reader["sid"]);
+                    sc.uid = Convert.ToInt32(reader["uid"]);
+                    sc.places = reader["places"].ToString();
+                    sc.approved = (Boolean)reader["approved"];
+                    sc.from = (DateTime)reader["from"];
+                    sc.to = (DateTime)reader["to"];
+                    list.Add(sc);
+                }
+            }
+            return list;
+        }
+
+        public Boolean logIn(string email, string pass)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "select * from [dbo].[User] where email = @email and password = @password"
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@email", email));
+                cmd.Parameters.Add(new SqlParameter("@password", pass));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        this.isLoggedin = true;
+                        reader.Read();
+                        uid = reader.GetInt32(0);
+                        if (reader.GetString(4).Equals("manager"))
+                            isManager = true;
+                        else
+                            isMR = true;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        public void RegisterMR(MedicalRepresentative mr)
+        {
+            int mrid = -1;
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "INSERT INTO [dbo].[User] ([name], [password], [email], [role], [address], [phonenumber]) VALUES (@name, @password,@email, @role, @address,@phonenumber)"
+                };
+
+                cmd.Parameters.AddWithValue("@name", mr.Name);
+                cmd.Parameters.AddWithValue("@email", mr.Email);
+                cmd.Parameters.AddWithValue("@password", mr.Password);                
+                cmd.Parameters.AddWithValue("@role", "mr");
+                cmd.Parameters.AddWithValue("@address", mr.Address);
+                cmd.Parameters.AddWithValue("@phonenumber", mr.PhoneNumber);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "select * from [dbo].[User] where email = @email and password = @password"
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@email", mr.Email));
+                cmd.Parameters.Add(new SqlParameter("@password", mr.Password));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        this.isLoggedin = true;
+                        reader.Read();
+                        mrid = reader.GetInt32(0);                        
+                    }                    
+                }
+            }
+            if (mrid != -1)
+            {
+                using (SqlConnection con = new SqlConnection(cs))
+                {
+                    SqlCommand cmd = new SqlCommand
+                    {
+                        Connection = con,
+                        CommandText =
+                            "INSERT INTO [dbo].[Manager_Mr] ([mid], [mrid]) VALUES (@mid, @mrid)"
+                    };
+
+                    cmd.Parameters.AddWithValue("@mid", uid);
+                    cmd.Parameters.AddWithValue("@mrid", mrid);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void RegisterManger(Manager manager)
+        {
+            string jregion = string.Join(",", manager.getRegion());           
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "INSERT INTO [dbo].[User] ([name], [password], [region], [email], [role], [address], [phonenumber]) VALUES (@name, @password,@region,@email, @role, @address,@phonenumber)"
+                };
+
+                cmd.Parameters.AddWithValue("@name", manager.Name);
+                cmd.Parameters.AddWithValue("@email", manager.Email);
+                cmd.Parameters.AddWithValue("@password", manager.Password);
+                cmd.Parameters.AddWithValue("@region", jregion);
+                cmd.Parameters.AddWithValue("@role", "manager");
+                cmd.Parameters.AddWithValue("@address", manager.Address);
+                cmd.Parameters.AddWithValue("@phonenumber", manager.PhoneNumber);                
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+       
+        public List<Schedule> GetSchedules()
+        {
+            List<Schedule> list = new List<Schedule>();
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Select * from Schedule";
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Schedule sc = new Schedule();
+                    sc.sid = Convert.ToInt32(reader["sid"]);
+                    sc.uid = Convert.ToInt32(reader["uid"]);
+                    sc.places = reader["places"].ToString();
+                    sc.approved = (Boolean)reader["approved"];
+                    sc.from = (DateTime)reader["from"];
+                    sc.to = (DateTime)reader["to"];
+                    list.Add(sc);
+                }
+            }
+            return list;
+        }
+       
+        public Schedule getSchedule(int sid)
+        {
+            Schedule sc = new Schedule();            
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Select * from Schedule where sid = @sid";
+                cmd.Parameters.AddWithValue("@sid", sid);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {                    
+                    sc.sid = Convert.ToInt32(reader["sid"]);
+                    sc.uid = Convert.ToInt32(reader["uid"]);
+                    sc.places = reader["places"].ToString();
+                    sc.approved = (Boolean)reader["approved"];
+                    sc.from = (DateTime)reader["from"];
+                    sc.to = (DateTime)reader["to"];                    
+                }
+            }
+            return sc;
+        }
+        public void addSchedule(Schedule schedule)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "INSERT INTO [dbo].[Schedule] ([uid], [places], [approved], [from], [to]) VALUES (@uid, @places,@approved,@from, @to)"
+                };
+
+                cmd.Parameters.AddWithValue("@uid", schedule.uid);
+                cmd.Parameters.AddWithValue("@places", schedule.places);
+                cmd.Parameters.AddWithValue("@approved", schedule.approved);
+                cmd.Parameters.AddWithValue("@from", schedule.from);
+                cmd.Parameters.AddWithValue("@to", schedule.to);                
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void updateSchedule(int sid, Boolean approved, string places)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "UPDATE [dbo].[Schedule] set approved = @approved,places = @places where sid = @sid"
+                };
+
+                cmd.Parameters.AddWithValue("@approved", approved);
+                cmd.Parameters.AddWithValue("@places", places);
+                cmd.Parameters.AddWithValue("@sid", sid);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void UpdateLocality(int id, string locality)
+        {            
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "UPDATE [dbo].[User] set region = @region where uid = @uid"
+                };
+
+                cmd.Parameters.AddWithValue("@region", locality);
+                cmd.Parameters.AddWithValue("@uid", id);                
+                con.Open();
+                cmd.ExecuteNonQuery();                
+            }
+        }
+        public List<KeyValuePair<int, string>> getMRList()
+        {
+            List<int> mrlistid = new List<int>();
+            List<string> mrlist = new List<string>();
+            List<KeyValuePair<int, string>> data = new List<KeyValuePair<int, string>>();
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText =
+                        "select * from [dbo].[Manager_Mr] where mid = @mid"
+                };
+                cmd.Parameters.Add(new SqlParameter("@mid", uid));                
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {                                                
+                        mrlistid.Add(reader.GetInt32(1));
+                    }
+                }
+                con.Close();
+                for (int i = 0; i < mrlistid.Count; i++)
+                {
+                    using (SqlConnection con1 = new SqlConnection(cs))
+                    {
+                        SqlCommand cmd1 = new SqlCommand
+                        {
+                            Connection = con1,
+                            CommandText =
+                                "select * from [dbo].[User] where uid = @uid"
+                        };
+                        con1.Open();
+
+                        cmd1.Parameters.Add(new SqlParameter("@uid", mrlistid[i]));
+                        using (SqlDataReader reader = cmd1.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {                                
+                                reader.Read();                                
+                                data.Add(new KeyValuePair<int, string>(mrlistid[i], reader.GetString(3)));
+                            }
+                        }
+                    }
+                }
+            }
+            return data;
+        }
         public int createMedince(AbstractMedicine medicine)
         {
             int mid = 0;

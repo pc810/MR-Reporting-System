@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRSystem
+namespace MRSystem1
 {
     public class MedicalRepresentative : Employee
     {
@@ -19,7 +19,6 @@ namespace MRSystem
         {
             this.Locality = locality;
         }
-
         public void addLocality(String locality)
         {
             Locality.Add(locality);

@@ -42,7 +42,7 @@ namespace MRSystem1
         private void button2_Click(object sender, EventArgs e)
         {
             Report report = new Report();
-            report.mrid = 123;
+            report.mrid = mrdb.uid;
             report.reportDate = dateTimePicker1.Value;
             report.place = listBox1.SelectedItem as string;
             int rid = mrdb.createReport(report);
